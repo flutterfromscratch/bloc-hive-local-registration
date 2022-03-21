@@ -35,6 +35,15 @@ class HomePage extends StatelessWidget {
                 ),
               );
             }
+            if (state is HomeInitial) {
+              if (state.error != null)
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text("Error"),
+                          content: Text(state.error!),
+                        ));
+            }
           },
           builder: (context, state) {
             if (state is HomeInitial) {
@@ -51,11 +60,30 @@ class HomePage extends StatelessWidget {
                       labelText: 'Password',
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () => BlocProvider.of<HomeBloc>(context).add(
-                      LoginEvent(usernameField.text, passwordField.text),
-                    ),
-                    child: Text('LOGIN'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => BlocProvider.of<HomeBloc>(context).add(
+                            LoginEvent(usernameField.text, passwordField.text),
+                          ),
+                          child: Text('LOGIN'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<HomeBloc>(context).add(
+                              RegisterAccountEvent(usernameField.text, passwordField.text),
+                            );
+                          },
+                          child: Text('REGISTER'),
+                        ),
+                      )
+                    ],
                   )
                 ],
               );
